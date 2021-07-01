@@ -1,5 +1,5 @@
 import { RequestHandler } from 'express';
-import Video from './Video';
+import Video from './UrlSchema';
 
 export const createVideo: RequestHandler = async (req, res) => {
 	const videoFound = await Video.findOne({ url: req.body.url });
