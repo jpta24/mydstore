@@ -4,7 +4,7 @@ import cors from 'cors'; // permite conexion con otros servidores
 
 import config from './config';
 
-import videoRoutes from './routes/videos.routes';
+import urlRoutes from './routes/url.routes';
 
 const app = express();
 
@@ -15,6 +15,6 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false })); // para entender los campos que vienen en la url
 
-app.use(videoRoutes);
+app.use(urlRoutes);
 
 export default app;
