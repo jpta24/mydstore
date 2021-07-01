@@ -1,23 +1,25 @@
 import { RequestHandler } from 'express';
 import Url from '../models/UrlSchema';
+import getPaginations from '../libs/urls'
 
 export const createUrl: RequestHandler = async (req, res) => {
-	const urlFound = await Url.findOne({ url: req.body.url });
+	/* const urlFound = await Url.findOne({ url: req.body.url });
 	if (urlFound)
-		return res.status(301).json({ message: 'Url already exists' });
+		return res.status(301).json({ message: 'Url already exists' }); */
+	
+	const  {url} = req.body
+
+	getPaginations(url)
 
 	const newUrl = new Url(req.body);
+
+
 	const savedUrl = await newUrl.save();
 	res.status(201).json(savedUrl);
 };
 
 export const getUrls: RequestHandler = async (req, res) => {
-	try {
-		const urls = await Url.find();
-		return res.json(urls);
-	} catch (error) {
-		res.json(error);
-	}
+	
 };
 
 export const getUrl: RequestHandler = async (req, res) => {
