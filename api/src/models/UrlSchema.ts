@@ -2,7 +2,7 @@ import { Schema, model } from 'mongoose';
 
 const urlSchema = new Schema(
 	{
-		url: {
+		link: {
 			type: String,
 			require: true,
 			trim: true,
@@ -20,9 +20,8 @@ const urlSchema = new Schema(
 	},
 	{
 		versionKey: false,
-		timestamps: true, 
+		timestamps: true,
 	}
 );
 
 export default model('Url', urlSchema);
-
