@@ -1,0 +1,36 @@
+@import '../../styles/colors';
+
+.NavBo {
+	font-weight: bold;
+	color: $priColor !important;
+	border: 1px solid $priColor;
+	backdrop-filter: blur(5px);
+	border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	-ms-border-radius: 5px;
+	-o-border-radius: 5px;
+}
+
+.NavBo:hover {
+	color: $qtaColor !important;
+	border: 1px solid $qtaColor;
+}
+
+.activeN {
+	transform: scale(1.05);
+	color: $secColor !important;
+	border: 2px solid $secColor;
+	-webkit-transform: scale(1.05);
+	-moz-transform: scale(1.05);
+	-ms-transform: scale(1.05);
+	-o-transform: scale(1.05);
+}
+
+.activeB {
+	transform: scale(1.05);
+	-webkit-transform: scale(1.05);
+	-moz-transform: scale(1.05);
+	-ms-transform: scale(1.05);
+	-o-transform: scale(1.05);
+}
