@@ -29,6 +29,8 @@ const ScanOneUrl = () => {
 
 		GetUrls(urlState.url);
 
+		setUrlState(initialState);
+
 		toast.success('Scaneando Urls');
 	};
 
