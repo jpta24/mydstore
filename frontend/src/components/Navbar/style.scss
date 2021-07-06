@@ -2,8 +2,8 @@
 
 .NavBo {
 	font-weight: bold;
-	color: $priColor !important;
-	border: 1px solid $priColor;
+	color: $color3 !important;
+	border: 1px solid $color3;
 	backdrop-filter: blur(5px);
 	border-radius: 5px;
 	-webkit-border-radius: 5px;
@@ -13,14 +13,14 @@
 }
 
 .NavBo:hover {
-	color: $qtaColor !important;
-	border: 1px solid $qtaColor;
+	color: $color5 !important;
+	border: 1px solid $color5;
 }
 
 .activeN {
 	transform: scale(1.05);
-	color: $secColor !important;
-	border: 2px solid $secColor;
+	color: $color2 !important;
+	border: 2px solid $color2;
 	-webkit-transform: scale(1.05);
 	-moz-transform: scale(1.05);
 	-ms-transform: scale(1.05);
