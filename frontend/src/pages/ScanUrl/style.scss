@@ -2,5 +2,10 @@
 
 .scanUrlBody {
 	margin-top: 70px;
-	border: 1px solid gray;
+
+	.h1centerV {
+		display: flex;
+		justify-content: center;
+		flex-direction: column;
+	}
 }
