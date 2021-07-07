@@ -56,3 +56,12 @@ export const updateUrl: RequestHandler = async (req, res) => {
 		return res.json(error);
 	}
 };
+
+export const getUrls: RequestHandler = async (req, res) => {
+	try {
+		const videos = await KeyWord.find();
+		return res.json(videos);
+	} catch (error) {
+		res.json(error).status(404);
+	}
+};

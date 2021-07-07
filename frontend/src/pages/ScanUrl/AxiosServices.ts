@@ -14,6 +14,10 @@ export const createKeyWord = async (obj: UrlInterface) => {
 	return await axios.post(API, obj);
 };
 
+export const getKeyWords = async () => {
+	return await axios.get<UrlInterface[]>(API);
+};
+
 /* export const getVideos = async () => {
 	return await axios.get<Video[]>(`${API}/videos`);
 };

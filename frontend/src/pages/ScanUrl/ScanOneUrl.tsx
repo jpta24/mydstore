@@ -18,7 +18,6 @@ const ScanOneUrl = () => {
 
 	const [urlState, setUrlState] = useState<UrlInterface>(initialState);
 
-	// funcion para manejar los cambios en los campos de un Form (input o textarea)
 	const handleInputChange = (e: InputChange) => {
 		setUrlState({ ...urlState, [e.target.name]: e.target.value });
 	};
@@ -28,7 +27,7 @@ const ScanOneUrl = () => {
 
 		GetUrls(urlState.url);
 
-		// setUrlState(initialState);
+		setUrlState(initialState);
 	};
 
 	return (

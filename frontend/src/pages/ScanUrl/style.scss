@@ -9,4 +9,34 @@
 		justify-content: center;
 		flex-direction: column;
 	}
+
+	.th {
+		background-color: $color5;
+		color: $color3;
+		text-align: center;
+		display: flex;
+		justify-content: center;
+		flex-direction: column;
+		font: {
+			weight: bold;
+			size: 1em;
+		}
+		.r2 {
+			font-size: small !important ;
+		}
+	}
+
+	.rowTable {
+		background-color: white;
+		color: black;
+		text-align: center;
+		display: flex;
+		justify-content: center;
+		flex-direction: column;
+		font-size: small;
+	}
+
+	.KW {
+		text-align: left !important;
+	}
 }

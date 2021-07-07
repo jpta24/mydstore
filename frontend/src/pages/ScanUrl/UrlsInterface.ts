@@ -1,4 +1,5 @@
 export interface UrlInterface {
+	_id?: string;
 	keyWord: string;
 	urls?: [
 		{
@@ -22,4 +23,7 @@ export interface UrlInterface {
 		unchecked?: number;
 		total?: number;
 	};
+
+	createdAt?: string | Date;
+	updatedAt?: string | Date;
 }
