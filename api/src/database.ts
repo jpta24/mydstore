@@ -9,6 +9,7 @@ import config from './config';
 			useUnifiedTopology: true,
 			useNewUrlParser: true,
 			useCreateIndex: true,
+			useFindAndModify: false,
 			/* user: config.MONGO_USER,
 			pass: config.MONGO_PASSWORD, */
 		};
@@ -16,6 +17,7 @@ import config from './config';
 			`mongodb://${config.MONGO_HOST}/${config.MONGO_DATABASE}`,
 			mongooseOptions
 		);
+		mongoose.Promise = global.Promise;
 		console.log('database is connected to:', colors.yellow(db.connection.name));
 	} catch (error) {
 		console.error(error);

@@ -13,7 +13,6 @@ const keyWordSchema = new Schema(
 				link: {
 					type: String,
 					trim: true,
-					unique: true,
 				},
 				checked: {
 					type: Boolean,
@@ -27,7 +26,6 @@ const keyWordSchema = new Schema(
 				asin: {
 					type: String,
 					trim: true,
-					unique: true,
 				},
 				checked: {
 					type: Boolean,
@@ -36,6 +34,34 @@ const keyWordSchema = new Schema(
 				},
 			},
 		],
+		nUrls: {
+			checked: {
+				type: Number,
+				require: true,
+			},
+			unchecked: {
+				type: Number,
+				require: true,
+			},
+			total: {
+				type: Number,
+				require: true,
+			},
+		},
+		nAsins: {
+			checked: {
+				type: Number,
+				require: true,
+			},
+			unchecked: {
+				type: Number,
+				require: true,
+			},
+			total: {
+				type: Number,
+				require: true,
+			},
+		},
 	},
 	{
 		versionKey: false,
@@ -43,4 +69,4 @@ const keyWordSchema = new Schema(
 	}
 );
 
-export default model('Url', keyWordSchema);
+export default model('KeyWord', keyWordSchema);

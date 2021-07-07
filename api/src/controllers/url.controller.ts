@@ -1,6 +1,5 @@
 import { RequestHandler } from 'express';
 import Url from '../models/UrlSchema';
-import getPaginations from '../libs/urls';
 
 export const getUrls: RequestHandler = async (req, res) => {
 	try {

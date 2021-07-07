@@ -1,6 +1,5 @@
 import React, { ChangeEvent, FormEvent, useState } from 'react';
 import { Button, Col, Form, Row } from 'react-bootstrap';
-import { toast } from 'react-toastify';
 
 import GetUrls from './BtnGetUrl';
 
@@ -29,9 +28,7 @@ const ScanOneUrl = () => {
 
 		GetUrls(urlState.url);
 
-		setUrlState(initialState);
-
-		toast.success('Scaneando Urls');
+		// setUrlState(initialState);
 	};
 
 	return (
