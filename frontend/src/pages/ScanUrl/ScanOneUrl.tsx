@@ -11,7 +11,11 @@ interface UrlInterface {
 	url: string;
 }
 
-const ScanOneUrl = () => {
+interface Props {
+	loadKeyWords: () => void;
+}
+
+const ScanOneUrl = ({ loadKeyWords }: Props) => {
 	const initialState = {
 		url: '',
 	};
@@ -46,8 +50,8 @@ const ScanOneUrl = () => {
 	const handleSubmit = async (e: typeSubmit) => {
 		e.preventDefault();
 		handleOnClick();
-		GetUrls(urlState.url);
 		setUrlState(initialState);
+		await GetUrls(urlState.url, loadKeyWords);
 	};
 
 	return (

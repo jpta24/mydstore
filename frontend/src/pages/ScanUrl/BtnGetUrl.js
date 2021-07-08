@@ -2,7 +2,7 @@ import $ from 'jquery';
 import { toast } from 'react-toastify';
 import * as axiosServices from './AxiosServices';
 
-async function getUrls(urlToScan) {
+async function getUrls(urlToScan, funX) {
 	let myRoute = window.location.href.replace('/scanurl', '');
 	let webUrl = urlToScan;
 
@@ -33,7 +33,7 @@ async function getUrls(urlToScan) {
 
 		//-----------------------PAGINATIONS --------------------------
 
-		async function paginationFun(data, id) {
+		async function paginationFun(data, id, funX) {
 			var paginations = $(data).find('.a-pagination').find('a');
 
 			for (var l = 0, len = paginations.length; l < len; l++) {
@@ -86,36 +86,18 @@ async function getUrls(urlToScan) {
 					}
 				}
 			}
+			funX();
 		}
 		axiosServices
 			.createKeyWord(newKW)
 			.then(function (res) {
 				toast.success('Se ha agregado Nueva KeyWord');
-				paginationFun(data, res.data._id);
+				paginationFun(data, res.data._id, funX);
 			})
 			.catch(function () {
 				toast.error('KeyWord repetida');
 			});
-
-		/* $.post(routeDB, newKW, function (res) {
-			console.log('here2');
-			console.log(res);
-			if (res === 'done') {
-				toast.success('Se ha agregado Nueva KeyWord');
-				paginationFun();
-			} else {
-				console.log('here');
-				const resp = res;
-				console.log(resp);
-				toast.error('KeyWord repetida');
-				//Incluir confirmacion KeyWord repetida, ¿desea actualizarla? SI se ejecuta paginationFun, No se continua
-			}
-		}); */
 	});
-	/* await $.get(routeDB).then(function (urls) {
-		const urlsTotal = urls;
-		console.log('Paginas a scanear: ' + urlsTotal.length);
-	}); */
 }
 
 export default getUrls;

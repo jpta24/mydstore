@@ -1,35 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import * as axiosServices from './AxiosServices';
+import React from 'react';
 
 import { UrlInterface } from './UrlsInterface';
 
-// pending create Interface
-
 import Row from './Row';
 
-const TableKW = () => {
-	const [keyWords, setKeyWords] = useState<UrlInterface[]>([]);
+interface Props {
+	keyWords: UrlInterface[];
+}
 
-	const loadKeyWords = async () => {
-		const res = await axiosServices.getKeyWords();
-
-		const formatedVideos = res.data
-			.map((eachKW) => {
-				return {
-					...eachKW,
-					createdAt: eachKW.createdAt ? new Date(eachKW.createdAt) : new Date(),
-					updatedAt: eachKW.updatedAt ? new Date(eachKW.updatedAt) : new Date(),
-				};
-			})
-			.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
-
-		setKeyWords(formatedVideos);
-	};
-
-	useEffect(() => {
-		loadKeyWords();
-	}, []);
-
+const TableKW = ({ keyWords }: Props) => {
 	return (
 		<div>
 			<div className='row'>
