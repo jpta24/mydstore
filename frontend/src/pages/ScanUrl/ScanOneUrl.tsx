@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FormEvent, useState } from 'react';
+import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { Button, Col, Form, Row } from 'react-bootstrap';
 
 import GetUrls from './BtnGetUrl';
@@ -16,7 +16,28 @@ const ScanOneUrl = () => {
 		url: '',
 	};
 
+	const [isLoading, setLoading] = useState(false);
 	const [urlState, setUrlState] = useState<UrlInterface>(initialState);
+
+	function simulateNetworkRequest() {
+		return new Promise((resolve) => setTimeout(resolve, 2000));
+	}
+
+	useEffect(() => {
+		if (isLoading) {
+			simulateNetworkRequest().then(() => {
+				setLoading(false);
+			});
+		}
+	}, [isLoading]);
+
+	const handleOnClick = () => {
+		if (!isLoading) {
+			handleClick();
+		}
+	};
+
+	const handleClick = () => setLoading(true);
 
 	const handleInputChange = (e: InputChange) => {
 		setUrlState({ ...urlState, [e.target.name]: e.target.value });
@@ -24,9 +45,8 @@ const ScanOneUrl = () => {
 
 	const handleSubmit = async (e: typeSubmit) => {
 		e.preventDefault();
-
+		handleOnClick();
 		GetUrls(urlState.url);
-
 		setUrlState(initialState);
 	};
 
@@ -43,7 +63,12 @@ const ScanOneUrl = () => {
 					/>
 				</Col>
 				<Col>
-					<Button as='input' type='submit' value='Scan URL' />
+					<Button
+						as='input'
+						type='submit'
+						value={isLoading ? 'Scaning...' : 'Scan URL'}
+						disabled={isLoading}
+					/>
 				</Col>
 			</Row>
 		</Form>
