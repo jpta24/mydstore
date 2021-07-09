@@ -9,4 +9,6 @@ router.put('/keywords', kwCtrl.updateUrl);
 
 router.get('/keywords', kwCtrl.getUrls);
 
+router.delete('/keywords/:id', kwCtrl.deleteUrl);
+
 export default router;

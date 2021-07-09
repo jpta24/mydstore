@@ -6,13 +6,14 @@ import Row from './Row';
 
 interface Props {
 	keyWords: UrlInterface[];
+	loadKeyWords: () => void;
 }
 
-const TableKW = ({ keyWords }: Props) => {
+const TableKW = ({ keyWords, loadKeyWords }: Props) => {
 	return (
-		<div>
+		<div className='mb-4'>
 			<div className='row'>
-				<div className='col-4 th border'>KEYWORDS</div>
+				<div className='col-3 th border'>KEYWORDS</div>
 				<div className='col-4 th border'>
 					<div>URLS</div>
 					<div className='d-flex'>
@@ -31,9 +32,12 @@ const TableKW = ({ keyWords }: Props) => {
 						<div className='col-5 r2'>Scan</div>
 					</div>
 				</div>
+				<div className='col-1 th border'>REMOVE</div>
 			</div>
 			{keyWords.map((eachKW: UrlInterface) => {
-				return <Row eachKW={eachKW} key={eachKW._id} />;
+				return (
+					<Row eachKW={eachKW} key={eachKW._id} loadKeyWords={loadKeyWords} />
+				);
 			})}
 		</div>
 	);

@@ -18,6 +18,10 @@ export const getKeyWords = async () => {
 	return await axios.get<UrlInterface[]>(API);
 };
 
+export const deleteKeyWord = async (id: string) => {
+	return await axios.delete<UrlInterface>(`${API}/${id}`);
+};
+
 /* export const getVideos = async () => {
 	return await axios.get<Video[]>(`${API}/videos`);
 };

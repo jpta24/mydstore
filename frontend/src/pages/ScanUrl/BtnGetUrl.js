@@ -11,6 +11,7 @@ async function getUrls(urlToScan, funX, funY) {
 			this.keyWord = keyWord;
 		}
 		function Pagina(link, id) {
+			this.update = 1;
 			this.id = id;
 			this.urls = {
 				link: link,
@@ -27,7 +28,8 @@ async function getUrls(urlToScan, funX, funY) {
 		if (keyWord2 !== '') {
 			keyWord = keyWord2;
 		} else {
-			keyWord = $(data).find('.zg_selected').text().trim();
+			let keyWord3 = $(data).find('.zg_selected').text().trim();
+			keyWord = 'Best Seller ' + keyWord3;
 		}
 		var newKW = new KeyWord(keyWord);
 

@@ -1,22 +1,82 @@
-import React from 'react';
+import React, { useState } from 'react';
+
+import * as axiosServices from './AxiosServices';
+
+import TrashCan from '../../components/icons/TrashCan';
 
 import { UrlInterface } from './UrlsInterface';
+import { toast } from 'react-toastify';
+import { Button, Modal, ProgressBar } from 'react-bootstrap';
+
+import GetAsins from './BtnGetAsins';
 
 interface Props {
 	eachKW: UrlInterface;
+	loadKeyWords: () => void;
 }
 
-const Row = ({ eachKW }: Props) => {
+const Row = ({ eachKW, loadKeyWords }: Props) => {
+	const handleDelete = async (id: string) => {
+		if (eachKW.nUrls?.checked === 0) {
+			await axiosServices
+				.deleteKeyWord(id)
+				.then(function () {
+					toast.info('KeyWord Eliminada');
+					loadKeyWords();
+				})
+				.catch(function () {
+					toast.error('KeyWord no encontrada');
+				});
+		} else {
+			toast.error('Ya esta KeyWord ha sido Scaneada');
+		}
+	};
+
+	const handleScan = async () => {
+		handleModelShow();
+		await GetAsins(eachKW.urls, eachKW._id, progressBarStatus);
+	};
+
+	//============MODAL===============================================//
+
+	const [show, setShow] = useState(false);
+
+	const handleClose = () => {
+		setShow(false);
+		setBarStatus(0);
+	};
+	const handleModelShow = () => setShow(true);
+
+	//========PROGRESS BAR============================================//
+	const [barStatus, setBarStatus] = useState(0);
+
+	const progressBarStatus = (now: number) => {
+		setBarStatus(now);
+	};
+
+	//================================================================//
+
 	return (
 		<div>
 			<div className='row'>
-				<div className='col-4 rowTable py-1 KW border'>{eachKW.keyWord}</div>
+				<div className='col-3 rowTable py-1 KW border'>{eachKW.keyWord}</div>
 				<div className='col-4 rowTable border'>
 					<div className='d-flex'>
 						<div className='col r2'>{eachKW.nUrls?.total}</div>
 						<div className='col r2'>{eachKW.nUrls?.checked}</div>
 						<div className='col r2'>{eachKW.nUrls?.unchecked}</div>
-						<div className='col-5 r2'>Scan</div>
+						<div className='col-5 r2'>
+							<div>
+								<Button
+									variant='warning'
+									size='sm'
+									value='Scan'
+									onClick={handleScan}
+								>
+									Scan
+								</Button>
+							</div>
+						</div>
 					</div>
 				</div>
 
@@ -25,10 +85,56 @@ const Row = ({ eachKW }: Props) => {
 						<div className='col r2'>{eachKW.nAsins?.total}</div>
 						<div className='col r2'>{eachKW.nAsins?.checked}</div>
 						<div className='col r2'>{eachKW.nAsins?.unchecked}</div>
-						<div className='col-5 r2'>Scan</div>
+						<div className='col-5 r2'>
+							<div>
+								<Button
+									variant='success'
+									size='sm'
+									value='Scan'
+									onClick={() => {
+										eachKW._id && // (si video._id existe entonce && ejecuta la siguente funcion) // salia un error pq el _id era opcional _id?
+											handleDelete(eachKW._id);
+									}}
+								>
+									Scan
+								</Button>
+							</div>
+						</div>
 					</div>
 				</div>
+				<div className='col-1 rowTable border mx-auto'>
+					<span
+						onClick={() => {
+							eachKW._id && // (si video._id existe entonce && ejecuta la siguente funcion) // salia un error pq el _id era opcional _id?
+								handleDelete(eachKW._id);
+						}}
+					>
+						<TrashCan stroke='red' />
+					</span>
+				</div>
 			</div>
+			<Modal
+				show={show}
+				onHide={handleClose}
+				backdrop='static'
+				keyboard={false}
+			>
+				<Modal.Header>
+					<Modal.Title>Atención</Modal.Title>
+				</Modal.Header>
+				<Modal.Body>
+					Se está ejecutando una acción en el servidor, por favor espere que
+					finalice para poder cerrar esta ventana.
+					<ProgressBar animated now={barStatus} label={`${barStatus}%`} />
+				</Modal.Body>
+				<Modal.Footer>
+					{barStatus === 100 ? (
+						<Button variant='secondary' onClick={handleClose}>
+							Close
+						</Button>
+					) : null}
+				</Modal.Footer>
+			</Modal>
 		</div>
 	);
 };

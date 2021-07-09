@@ -36,22 +36,55 @@ export const createUrl: RequestHandler = async (req, res) => {
 
 export const updateUrl: RequestHandler = async (req, res) => {
 	try {
-		const newObj = {
-			id: req.body.id,
-			urls: {
-				link: req.body.urls.link,
-				checked: req.body.urls.checked,
-			},
-		};
-		const KWUpdated = await KeyWord.findByIdAndUpdate(
-			newObj.id,
-			{
-				$inc: { 'nUrls.unchecked': 1, 'nUrls.total': 1 },
-				$push: { urls: newObj.urls },
-			},
-			{ new: true }
-		);
-		return res.status(201).json(KWUpdated);
+		if (req.body.update === 1) {
+			const newObj = {
+				id: req.body.id,
+				urls: {
+					link: req.body.urls.link,
+					checked: req.body.urls.checked,
+				},
+			};
+			const KWUpdated = await KeyWord.findByIdAndUpdate(
+				newObj.id,
+				{
+					$inc: { 'nUrls.unchecked': 1, 'nUrls.total': 1 },
+					$push: { urls: newObj.urls },
+				},
+				{ new: true }
+			);
+			return res.status(201).json(KWUpdated);
+		} else if (req.body.update === 2) {
+			const newObj = {
+				asins: {
+					asin: req.body.asins.asin,
+					checked: false,
+				},
+			};
+			const KWUpdated = await KeyWord.findByIdAndUpdate(
+				req.body.id,
+				{
+					$inc: {
+						'nAsins.unchecked': 1,
+						'nAsins.total': 1,
+					},
+					$push: { asins: newObj.asins },
+				},
+				{ new: true }
+			);
+			return res.status(201).json(KWUpdated);
+		} else if (req.body.update === 3) {
+			const KWUpdated = await KeyWord.findByIdAndUpdate(
+				req.body.id,
+				{
+					$inc: {
+						'nUrls.unchecked': -1,
+						'nUrls.checked': 1,
+					},
+				},
+				{ new: true }
+			);
+			return res.status(201).json(KWUpdated);
+		}
 	} catch (error) {
 		return res.json(error);
 	}
@@ -59,8 +92,17 @@ export const updateUrl: RequestHandler = async (req, res) => {
 
 export const getUrls: RequestHandler = async (req, res) => {
 	try {
-		const videos = await KeyWord.find();
-		return res.json(videos);
+		const keyWords = await KeyWord.find();
+		return res.json(keyWords);
+	} catch (error) {
+		res.json(error).status(404);
+	}
+};
+
+export const deleteUrl: RequestHandler = async (req, res) => {
+	try {
+		const keyWordFound = await KeyWord.findByIdAndDelete(req.params.id);
+		return res.json(keyWordFound);
 	} catch (error) {
 		res.json(error).status(404);
 	}

@@ -23,6 +23,9 @@
 		}
 		.r2 {
 			font-size: small !important ;
+			display: flex;
+			justify-content: center;
+			flex-direction: column;
 		}
 	}
 
@@ -34,9 +37,27 @@
 		justify-content: center;
 		flex-direction: column;
 		font-size: small;
+		.r2 {
+			font-size: small !important ;
+			display: flex;
+			justify-content: center;
+			flex-direction: column;
+		}
 	}
 
 	.KW {
 		text-align: left !important;
+	}
+
+	.TrashCanIcon {
+		stroke: $color5;
+		width: 20px;
+		height: auto;
+		margin-right: auto !important;
+		margin-left: auto !important;
+	}
+
+	.TrashCanIcon:hover {
+		stroke: $color1;
 	}
 }
