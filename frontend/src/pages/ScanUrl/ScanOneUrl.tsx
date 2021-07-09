@@ -1,5 +1,5 @@
 import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react';
-import { Button, Col, Form, Row } from 'react-bootstrap';
+import { Button, Col, Form, Modal, ProgressBar, Row } from 'react-bootstrap';
 
 import GetUrls from './BtnGetUrl';
 
@@ -35,7 +35,7 @@ const ScanOneUrl = ({ loadKeyWords }: Props) => {
 		}
 	}, [isLoading]);
 
-	const handleOnClick = () => {
+	const handleOnClickLoadingButtom = () => {
 		if (!isLoading) {
 			handleClick();
 		}
@@ -49,10 +49,30 @@ const ScanOneUrl = ({ loadKeyWords }: Props) => {
 
 	const handleSubmit = async (e: typeSubmit) => {
 		e.preventDefault();
-		handleOnClick();
+		handleOnClickLoadingButtom();
+		handleModelShow();
 		setUrlState(initialState);
-		await GetUrls(urlState.url, loadKeyWords);
+		await GetUrls(urlState.url, loadKeyWords, progressBarStatus);
 	};
+
+	//============MODAL===============================================//
+
+	const [show, setShow] = useState(false);
+
+	const handleClose = () => {
+		setShow(false);
+		setBarStatus(0);
+	};
+	const handleModelShow = () => setShow(true);
+
+	//========PROGRESS BAR============================================//
+	const [barStatus, setBarStatus] = useState(0);
+
+	const progressBarStatus = (now: number) => {
+		setBarStatus(now);
+	};
+
+	//================================================================//
 
 	return (
 		<Form onSubmit={handleSubmit}>
@@ -75,6 +95,28 @@ const ScanOneUrl = ({ loadKeyWords }: Props) => {
 					/>
 				</Col>
 			</Row>
+			<Modal
+				show={show}
+				onHide={handleClose}
+				backdrop='static'
+				keyboard={false}
+			>
+				<Modal.Header>
+					<Modal.Title>Atención</Modal.Title>
+				</Modal.Header>
+				<Modal.Body>
+					Se está ejecutando una acción en el servidor, por favor espere que
+					finalice y se cierre esta ventana de dialogo.
+					<ProgressBar animated now={barStatus} label={`${barStatus}%`} />
+				</Modal.Body>
+				<Modal.Footer>
+					{barStatus === 100 ? (
+						<Button variant='secondary' onClick={handleClose}>
+							Close
+						</Button>
+					) : null}
+				</Modal.Footer>
+			</Modal>
 		</Form>
 	);
 };

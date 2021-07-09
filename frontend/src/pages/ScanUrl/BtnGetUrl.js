@@ -2,7 +2,7 @@ import $ from 'jquery';
 import { toast } from 'react-toastify';
 import * as axiosServices from './AxiosServices';
 
-async function getUrls(urlToScan, funX) {
+async function getUrls(urlToScan, funX, funY) {
 	let myRoute = window.location.href.replace('/scanurl', '');
 	let webUrl = urlToScan;
 
@@ -31,9 +31,19 @@ async function getUrls(urlToScan, funX) {
 		}
 		var newKW = new KeyWord(keyWord);
 
+		axiosServices
+			.createKeyWord(newKW)
+			.then(function (res) {
+				toast.success('Se ha agregado Nueva KeyWord');
+				paginationFun(data, res.data._id, funX, funY);
+			})
+			.catch(function () {
+				toast.error('KeyWord repetida');
+			});
+
 		//-----------------------PAGINATIONS --------------------------
 
-		async function paginationFun(data, id, funX) {
+		async function paginationFun(data, id, funX, funY) {
 			var paginations = $(data).find('.a-pagination').find('a');
 
 			for (var l = 0, len = paginations.length; l < len; l++) {
@@ -74,6 +84,7 @@ async function getUrls(urlToScan, funX) {
 
 				for (let p = 0; p < totalPag; p++) {
 					let px = p + 1;
+					let now = Math.ceil((p * 100) / totalPag);
 					var paginations4 =
 						paginationBase.substr(0, paginationBase.length - 1) + px;
 					var paginations3 = paginations4.replace('page=2', 'page=' + px);
@@ -82,21 +93,13 @@ async function getUrls(urlToScan, funX) {
 						if (paginations3 !== paginations2_1) {
 							newUrl = new Pagina(paginations3, id);
 							axiosServices.updateKeyWord(newUrl);
+							funY(now);
 						}
 					}
 				}
 			}
 			funX();
 		}
-		axiosServices
-			.createKeyWord(newKW)
-			.then(function (res) {
-				toast.success('Se ha agregado Nueva KeyWord');
-				paginationFun(data, res.data._id, funX);
-			})
-			.catch(function () {
-				toast.error('KeyWord repetida');
-			});
 	});
 }
 
