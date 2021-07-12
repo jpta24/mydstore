@@ -17,9 +17,6 @@ async function getUrls(urlToScan, funX, funY) {
 				link: link,
 				checked: false,
 			};
-			this.nUrls = {
-				unchecked: 1,
-			};
 		}
 
 		//-----------------------KEYWORD --------------------------
@@ -48,26 +45,8 @@ async function getUrls(urlToScan, funX, funY) {
 		async function paginationFun(data, id, funX, funY) {
 			var paginations = $(data).find('.a-pagination').find('a');
 
-			for (var l = 0, len = paginations.length; l < len; l++) {
-				var pagination = paginations[l].href;
-
-				if (pagination.search('amazon.com') !== -1) {
-					var newUrl = new Pagina(pagination, id);
-					//console.log('1 ' + newUrl);
-					axiosServices.updateKeyWord(newUrl);
-				} else if (pagination.search(myRoute) !== -1) {
-					var paginations2 = pagination.replace(
-						myRoute,
-						'https://www.amazon.com'
-					);
-
-					newUrl = new Pagina(paginations2, id);
-					//console.log(JSON.stringify(newUrl));
-					axiosServices.updateKeyWord(newUrl);
-				}
-			}
-
 			var totalPag1 = $(data).find('.a-pagination').find('li');
+
 			if (totalPag1.length === 7) {
 				var totalPag = parseFloat(totalPag1[5].innerText);
 				var paginationBase = '';
@@ -86,20 +65,43 @@ async function getUrls(urlToScan, funX, funY) {
 
 				for (let p = 0; p < totalPag; p++) {
 					let px = p + 1;
-					let now = Math.ceil((p * 100) / totalPag);
+					let now = Math.ceil(((p + 1) * 100) / totalPag);
 					var paginations4 =
 						paginationBase.substr(0, paginationBase.length - 1) + px;
 					var paginations3 = paginations4.replace('page=2', 'page=' + px);
 
 					if (paginations3 !== paginations1_1) {
 						if (paginations3 !== paginations2_1) {
-							newUrl = new Pagina(paginations3, id);
+							let newUrl = new Pagina(paginations3, id);
 							axiosServices.updateKeyWord(newUrl);
 							funY(now);
 						}
 					}
 				}
+			} else {
+				for (var l = 0, len = paginations.length; l < len; l++) {
+					var pagination = paginations[l].href;
+
+					if (pagination.search('amazon.com') !== -1) {
+						var newUrl = new Pagina(pagination, id);
+						//console.log('1 ' + newUrl);
+						axiosServices.updateKeyWord(newUrl);
+					} else if (pagination.search(myRoute) !== -1) {
+						var paginations2 = pagination.replace(
+							myRoute,
+							'https://www.amazon.com'
+						);
+
+						newUrl = new Pagina(paginations2, id);
+						//console.log(JSON.stringify(newUrl));
+						axiosServices.updateKeyWord(newUrl);
+					}
+					let now = Math.ceil(((l + 1) * 100) / paginations.length);
+
+					funY(now);
+				}
 			}
+
 			funX();
 		}
 	});

@@ -1,7 +1,7 @@
 import $ from 'jquery';
 import * as axiosServices from './AxiosServices';
 
-async function getAsins(urls, id, funX) {
+async function getAsins(urls, id, funX, funY) {
 	function Asin(asin, id) {
 		this.update = 2;
 		this.id = id;
@@ -9,13 +9,22 @@ async function getAsins(urls, id, funX) {
 	}
 
 	function UpdateNUrls(id) {
-		this.update = 2;
+		this.update = 3;
 		this.id = id;
+	}
+
+	function UpdateUrlChecked(url, id) {
+		this.update = 4;
+		this.id = id;
+		this.url = url;
 	}
 
 	let totalUrls = urls.length;
 	for (let w = 0; w < urls.length; w++) {
 		if (urls[w].checked === false) {
+			let newUrl = new UpdateUrlChecked(urls[w].link, id);
+			axiosServices.updateKeyWord(newUrl);
+
 			const webUrlPag = urls[w].link;
 
 			await $.get(webUrlPag).then(function (data) {
@@ -35,21 +44,26 @@ async function getAsins(urls, id, funX) {
 						let link1 = link.substr(link.indexOf('%2Fdp%2F') + 8, 10);
 						let newAsin = new Asin(link1, id);
 						axiosServices.updateKeyWord(newAsin);
+						//console.log(newAsin);
 					} else if (link.search('/dp/') !== -1) {
 						let link1 = link.substr(link.indexOf('/dp/') + 4, 10);
 						let newAsin = new Asin(link1, id);
 						axiosServices.updateKeyWord(newAsin);
+						//console.log(newAsin);
 					}
 				}
 
 				let newUpdateNUrls = new UpdateNUrls(id);
 
 				axiosServices.updateKeyWord(newUpdateNUrls);
+				//console.log(newUpdateNUrls);
 			});
 		}
-		let now = Math.ceil((w * 100) / totalUrls);
+		let now = Math.ceil(((w + 1) * 100) / totalUrls);
+
 		funX(now);
 	}
+	funY();
 }
 
 export default getAsins;

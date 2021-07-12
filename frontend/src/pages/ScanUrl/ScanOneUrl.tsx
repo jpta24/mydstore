@@ -49,6 +49,7 @@ const ScanOneUrl = ({ loadKeyWords }: Props) => {
 
 	const handleSubmit = async (e: typeSubmit) => {
 		e.preventDefault();
+		setBarStatus(0);
 		handleOnClickLoadingButtom();
 		handleModelShow();
 		setUrlState(initialState);

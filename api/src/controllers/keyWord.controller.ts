@@ -44,6 +44,7 @@ export const updateUrl: RequestHandler = async (req, res) => {
 					checked: req.body.urls.checked,
 				},
 			};
+
 			const KWUpdated = await KeyWord.findByIdAndUpdate(
 				newObj.id,
 				{
@@ -54,9 +55,9 @@ export const updateUrl: RequestHandler = async (req, res) => {
 			);
 			return res.status(201).json(KWUpdated);
 		} else if (req.body.update === 2) {
-			const newObj = {
+			let newObj = {
 				asins: {
-					asin: req.body.asins.asin,
+					asin: req.body.asin,
 					checked: false,
 				},
 			};
@@ -80,6 +81,15 @@ export const updateUrl: RequestHandler = async (req, res) => {
 						'nUrls.unchecked': -1,
 						'nUrls.checked': 1,
 					},
+				},
+				{ new: true }
+			);
+			return res.status(201).json(KWUpdated);
+		} else if (req.body.update === 4) {
+			const KWUpdated = await KeyWord.findOneAndUpdate(
+				{ _id: req.body.id, 'urls.link': req.body.url },
+				{
+					$set: { 'urls.$.checked': true },
 				},
 				{ new: true }
 			);

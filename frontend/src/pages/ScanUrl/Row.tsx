@@ -33,8 +33,9 @@ const Row = ({ eachKW, loadKeyWords }: Props) => {
 	};
 
 	const handleScan = async () => {
+		setBarStatus2(0);
 		handleModelShow();
-		await GetAsins(eachKW.urls, eachKW._id, progressBarStatus);
+		await GetAsins(eachKW.urls, eachKW._id, progressBarStatus2, loadKeyWords);
 	};
 
 	//============MODAL===============================================//
@@ -43,15 +44,14 @@ const Row = ({ eachKW, loadKeyWords }: Props) => {
 
 	const handleClose = () => {
 		setShow(false);
-		setBarStatus(0);
 	};
 	const handleModelShow = () => setShow(true);
 
 	//========PROGRESS BAR============================================//
-	const [barStatus, setBarStatus] = useState(0);
+	const [barStatus2, setBarStatus2] = useState(0);
 
-	const progressBarStatus = (now: number) => {
-		setBarStatus(now);
+	const progressBarStatus2 = (now: number) => {
+		setBarStatus2(now);
 	};
 
 	//================================================================//
@@ -67,14 +67,18 @@ const Row = ({ eachKW, loadKeyWords }: Props) => {
 						<div className='col r2'>{eachKW.nUrls?.unchecked}</div>
 						<div className='col-5 r2'>
 							<div>
-								<Button
-									variant='warning'
-									size='sm'
-									value='Scan'
-									onClick={handleScan}
-								>
-									Scan
-								</Button>
+								{eachKW.nUrls?.checked === eachKW.nUrls?.total ? (
+									'URLs scaneadas'
+								) : (
+									<Button
+										variant='warning'
+										size='sm'
+										value='Scan'
+										onClick={handleScan}
+									>
+										Scan
+									</Button>
+								)}
 							</div>
 						</div>
 					</div>
@@ -125,14 +129,12 @@ const Row = ({ eachKW, loadKeyWords }: Props) => {
 				<Modal.Body>
 					Se está ejecutando una acción en el servidor, por favor espere que
 					finalice para poder cerrar esta ventana.
-					<ProgressBar animated now={barStatus} label={`${barStatus}%`} />
+					<ProgressBar animated now={barStatus2} label={`${barStatus2}%`} />
 				</Modal.Body>
 				<Modal.Footer>
-					{barStatus === 100 ? (
-						<Button variant='secondary' onClick={handleClose}>
-							Close
-						</Button>
-					) : null}
+					<Button variant='secondary' onClick={handleClose}>
+						Close
+					</Button>
 				</Modal.Footer>
 			</Modal>
 		</div>
