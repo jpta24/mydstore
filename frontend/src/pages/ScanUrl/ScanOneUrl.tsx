@@ -63,6 +63,7 @@ const ScanOneUrl = ({ loadKeyWords }: Props) => {
 	const handleClose = () => {
 		setShow(false);
 		setBarStatus(0);
+		loadKeyWords();
 	};
 	const handleModelShow = () => setShow(true);
 

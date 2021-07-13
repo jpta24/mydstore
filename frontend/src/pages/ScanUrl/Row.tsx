@@ -44,6 +44,7 @@ const Row = ({ eachKW, loadKeyWords }: Props) => {
 
 	const handleClose = () => {
 		setShow(false);
+		loadKeyWords();
 	};
 	const handleModelShow = () => setShow(true);
 

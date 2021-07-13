@@ -55,20 +55,31 @@ export const updateUrl: RequestHandler = async (req, res) => {
 			);
 			return res.status(201).json(KWUpdated);
 		} else if (req.body.update === 2) {
-			let newObj = {
-				asins: {
-					asin: req.body.asin,
+			const obj = [];
+
+			for (let i = 0; i < req.body.asin.length; i++) {
+				const asin = {
+					asin: req.body.asin[i],
 					checked: false,
-				},
-			};
+				};
+
+				obj.push(asin);
+			}
+
+			console.log(obj);
+
 			const KWUpdated = await KeyWord.findByIdAndUpdate(
 				req.body.id,
 				{
 					$inc: {
-						'nAsins.unchecked': 1,
-						'nAsins.total': 1,
+						'nAsins.unchecked': req.body.nAsins,
+						'nAsins.total': req.body.nAsins,
+						'nUrls.checked': req.body.nUrls,
+						'nUrls.unchecked': -req.body.nUrls,
 					},
-					$push: { asins: newObj.asins },
+					$push: {
+						asins: { $each: obj },
+					},
 				},
 				{ new: true }
 			);
