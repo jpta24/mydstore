@@ -37,23 +37,27 @@ export const createUrl: RequestHandler = async (req, res) => {
 export const updateUrl: RequestHandler = async (req, res) => {
 	try {
 		if (req.body.update === 1) {
-			const newObj = {
-				id: req.body.id,
-				urls: {
-					link: req.body.urls.link,
-					checked: req.body.urls.checked,
-				},
-			};
+			for (let i = 0; i < req.body.urls.length; i++) {
+				console.log(i);
 
-			const KWUpdated = await KeyWord.findByIdAndUpdate(
-				newObj.id,
-				{
-					$inc: { 'nUrls.unchecked': 1, 'nUrls.total': 1 },
-					$push: { urls: newObj.urls },
-				},
-				{ new: true }
-			);
-			return res.status(201).json(KWUpdated);
+				const newObj = {
+					id: req.body.id,
+					urls: {
+						link: req.body.urls[i],
+						checked: false,
+					},
+				};
+
+				await KeyWord.findByIdAndUpdate(
+					newObj.id,
+					{
+						$inc: { 'nUrls.unchecked': 1, 'nUrls.total': 1 },
+						$push: { urls: newObj.urls },
+					},
+					{ new: true }
+				);
+			}
+			return res.status(201);
 		} else if (req.body.update === 2) {
 			const obj = [];
 
@@ -66,7 +70,15 @@ export const updateUrl: RequestHandler = async (req, res) => {
 				obj.push(asin);
 			}
 
-			console.log(obj);
+			for (let i = 0; i < req.body.urlsChecked.length; i++) {
+				await KeyWord.findOneAndUpdate(
+					{ _id: req.body.id, 'urls.link': req.body.urlsChecked[i] },
+					{
+						$set: { 'urls.$.checked': true },
+					},
+					{ new: true }
+				);
+			}
 
 			const KWUpdated = await KeyWord.findByIdAndUpdate(
 				req.body.id,
@@ -83,27 +95,17 @@ export const updateUrl: RequestHandler = async (req, res) => {
 				},
 				{ new: true }
 			);
-			return res.status(201).json(KWUpdated);
-		} else if (req.body.update === 3) {
-			const KWUpdated = await KeyWord.findByIdAndUpdate(
-				req.body.id,
-				{
-					$inc: {
-						'nUrls.unchecked': -1,
-						'nUrls.checked': 1,
+
+			for (let i = 0; i < req.body.urlsChecked.length; i++) {
+				await KeyWord.findOneAndUpdate(
+					{ _id: req.body.id, 'urls.link': req.body.urlsChecked[i] },
+					{
+						$set: { 'urls.$.checked': true },
 					},
-				},
-				{ new: true }
-			);
-			return res.status(201).json(KWUpdated);
-		} else if (req.body.update === 4) {
-			const KWUpdated = await KeyWord.findOneAndUpdate(
-				{ _id: req.body.id, 'urls.link': req.body.url },
-				{
-					$set: { 'urls.$.checked': true },
-				},
-				{ new: true }
-			);
+					{ new: true }
+				);
+			}
+
 			return res.status(201).json(KWUpdated);
 		}
 	} catch (error) {
