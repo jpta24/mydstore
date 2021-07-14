@@ -79,8 +79,6 @@ async function getUrls(urlToScan, funX, funY) {
 							if (doubled.length === 0) {
 								links.push(paginations3);
 							}
-							/* let newUrl = new Pagina(paginations3, id);
-							axiosServices.updateKeyWord(newUrl); */
 							funY(now);
 						}
 					}
@@ -113,9 +111,6 @@ async function getUrls(urlToScan, funX, funY) {
 						if (doubled.length === 0) {
 							links.push(paginations2);
 						}
-						/* newUrl = new Pagina(paginations2, id);
-						//console.log(JSON.stringify(newUrl));
-						axiosServices.updateKeyWord(newUrl); */
 					}
 					let now = Math.ceil(((l + 1) * 100) / paginations.length);
 
