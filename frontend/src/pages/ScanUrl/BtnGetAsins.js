@@ -2,21 +2,21 @@ import $ from 'jquery';
 import * as axiosServices from './AxiosServices';
 
 async function getAsins(urls, id, funX, funY) {
-	function Asin(asin, id, nUrls, nAsins) {
+	function Asin(asin, id, nUrls, nAsins, urlsChecked) {
 		this.update = 2;
 		this.id = id;
 		this.asin = asin;
 		this.nUrls = nUrls;
 		this.nAsins = nAsins;
+		this.urlsChecked = urlsChecked;
 	}
 	let totalUrls = urls.length;
 	let asins = [];
+	let urlsChecked = [];
 	for (let w = 0; w < urls.length; w++) {
 		if (urls[w].checked === false) {
-			//let newUrl = new UpdateUrlChecked(urls[w].link, id);
-			//axiosServices.updateKeyWord(newUrl);
-
 			const webUrlPag = urls[w].link;
+			urlsChecked.push(webUrlPag);
 
 			await $.get(webUrlPag).then(function (data) {
 				let lonks = $(data).find('.s-main-slot').find('a');
@@ -69,7 +69,7 @@ async function getAsins(urls, id, funX, funY) {
 			checked: false,
 		};
 	}
-	let newAsin = new Asin(asins, id, urls.length, asins.length);
+	let newAsin = new Asin(asins, id, urls.length, asins.length, urlsChecked);
 	axiosServices.updateKeyWord(newAsin);
 	funY();
 }

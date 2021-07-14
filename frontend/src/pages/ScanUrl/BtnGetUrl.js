@@ -10,13 +10,10 @@ async function getUrls(urlToScan, funX, funY) {
 		function KeyWord(keyWord) {
 			this.keyWord = keyWord;
 		}
-		function Pagina(link, id) {
+		function Pagina(links, id) {
 			this.update = 1;
 			this.id = id;
-			this.urls = {
-				link: link,
-				checked: false,
-			};
+			this.urls = links;
 		}
 
 		//-----------------------KEYWORD --------------------------
@@ -43,6 +40,7 @@ async function getUrls(urlToScan, funX, funY) {
 		//-----------------------PAGINATIONS --------------------------
 
 		async function paginationFun(data, id, funX, funY) {
+			let links = [];
 			var paginations = $(data).find('.a-pagination').find('a');
 
 			var totalPag1 = $(data).find('.a-pagination').find('li');
@@ -72,8 +70,17 @@ async function getUrls(urlToScan, funX, funY) {
 
 					if (paginations3 !== paginations1_1) {
 						if (paginations3 !== paginations2_1) {
-							let newUrl = new Pagina(paginations3, id);
-							axiosServices.updateKeyWord(newUrl);
+							let doubled = [];
+							for (let i = 0; i < links.length; i++) {
+								if (links[i] === paginations3) {
+									doubled.push(paginations3);
+								}
+							}
+							if (doubled.length === 0) {
+								links.push(paginations3);
+							}
+							/* let newUrl = new Pagina(paginations3, id);
+							axiosServices.updateKeyWord(newUrl); */
 							funY(now);
 						}
 					}
@@ -83,24 +90,42 @@ async function getUrls(urlToScan, funX, funY) {
 					var pagination = paginations[l].href;
 
 					if (pagination.search('amazon.com') !== -1) {
-						var newUrl = new Pagina(pagination, id);
-						//console.log('1 ' + newUrl);
-						axiosServices.updateKeyWord(newUrl);
+						let doubled = [];
+						for (let i = 0; i < links.length; i++) {
+							if (links[i] === pagination) {
+								doubled.push(pagination);
+							}
+						}
+						if (doubled.length === 0) {
+							links.push(pagination);
+						}
 					} else if (pagination.search(myRoute) !== -1) {
 						var paginations2 = pagination.replace(
 							myRoute,
 							'https://www.amazon.com'
 						);
-
-						newUrl = new Pagina(paginations2, id);
+						let doubled = [];
+						for (let i = 0; i < links.length; i++) {
+							if (links[i] === paginations2) {
+								doubled.push(paginations2);
+							}
+						}
+						if (doubled.length === 0) {
+							links.push(paginations2);
+						}
+						/* newUrl = new Pagina(paginations2, id);
 						//console.log(JSON.stringify(newUrl));
-						axiosServices.updateKeyWord(newUrl);
+						axiosServices.updateKeyWord(newUrl); */
 					}
 					let now = Math.ceil(((l + 1) * 100) / paginations.length);
 
 					funY(now);
 				}
 			}
+
+			const newUrl = new Pagina(links, id);
+			console.log(newUrl);
+			axiosServices.updateKeyWord(newUrl);
 
 			funX();
 		}
