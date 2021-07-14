@@ -38,8 +38,6 @@ export const updateUrl: RequestHandler = async (req, res) => {
 	try {
 		if (req.body.update === 1) {
 			for (let i = 0; i < req.body.urls.length; i++) {
-				console.log(i);
-
 				const newObj = {
 					id: req.body.id,
 					urls: {
