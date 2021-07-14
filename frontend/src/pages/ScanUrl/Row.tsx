@@ -17,22 +17,24 @@ interface Props {
 
 const Row = ({ eachKW, loadKeyWords }: Props) => {
 	const handleDelete = async (id: string) => {
-		if (eachKW.nUrls?.checked === 0) {
-			await axiosServices
-				.deleteKeyWord(id)
-				.then(function () {
-					toast.info('KeyWord Eliminada');
-					loadKeyWords();
-				})
-				.catch(function () {
-					toast.error('KeyWord no encontrada');
-				});
-		} else {
-			toast.error('Ya esta KeyWord ha sido Scaneada');
-		}
+		await axiosServices
+			.deleteKeyWord(id)
+			.then(function () {
+				toast.info('KeyWord Eliminada');
+				loadKeyWords();
+			})
+			.catch(function () {
+				toast.error('KeyWord no encontrada');
+			});
 	};
 
 	const handleScan = async () => {
+		setBarStatus2(0);
+		handleModelShow();
+		await GetAsins(eachKW.urls, eachKW._id, progressBarStatus2, loadKeyWords);
+	};
+
+	const handleScan2 = async () => {
 		setBarStatus2(0);
 		handleModelShow();
 		await GetAsins(eachKW.urls, eachKW._id, progressBarStatus2, loadKeyWords);
@@ -96,10 +98,7 @@ const Row = ({ eachKW, loadKeyWords }: Props) => {
 									variant='success'
 									size='sm'
 									value='Scan'
-									onClick={() => {
-										eachKW._id && // (si video._id existe entonce && ejecuta la siguente funcion) // salia un error pq el _id era opcional _id?
-											handleDelete(eachKW._id);
-									}}
+									onClick={handleScan2}
 								>
 									Scan
 								</Button>
