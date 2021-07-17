@@ -70,6 +70,7 @@ async function getAsins(urls, id, funX, funY) {
 		};
 	}
 	let newAsin = new Asin(asins, id, urls.length, asins.length, urlsChecked);
+	console.log(newAsin);
 	axiosServices.updateKeyWord(newAsin);
 	funY();
 }

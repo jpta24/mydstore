@@ -35,6 +35,8 @@ export const createUrl: RequestHandler = async (req, res) => {
 };
 
 export const updateUrl: RequestHandler = async (req, res) => {
+	console.log(req.body);
+
 	try {
 		if (req.body.update === 1) {
 			for (let i = 0; i < req.body.urls.length; i++) {

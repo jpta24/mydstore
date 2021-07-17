@@ -9,6 +9,7 @@ import { toast } from 'react-toastify';
 import { Button, Modal, ProgressBar } from 'react-bootstrap';
 
 import GetAsins from './BtnGetAsins';
+import GetAsinInfo from './BtnGetAsinInfo';
 
 interface Props {
 	eachKW: UrlInterface;
@@ -35,9 +36,16 @@ const Row = ({ eachKW, loadKeyWords }: Props) => {
 	};
 
 	const handleScan2 = async () => {
-		setBarStatus2(0);
-		handleModelShow();
-		await GetAsins(eachKW.urls, eachKW._id, progressBarStatus2, loadKeyWords);
+		//setBarStatus2(0);
+		//handleModelShow();
+		await GetAsinInfo(
+			eachKW.asins,
+			eachKW.keyWord,
+			[],
+			eachKW._id,
+			progressBarStatus2,
+			loadKeyWords
+		);
 	};
 
 	//============MODAL===============================================//

@@ -119,7 +119,6 @@ async function getUrls(urlToScan, funX, funY) {
 			}
 
 			const newUrl = new Pagina(links, id);
-			console.log(newUrl);
 			axiosServices.updateKeyWord(newUrl);
 
 			funX();
