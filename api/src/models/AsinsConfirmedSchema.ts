@@ -2,7 +2,10 @@ import { Schema, model } from 'mongoose';
 
 const asinsConfirmedSchema = new Schema(
 	{
-		asins: [],
+		asins: {
+			type: Array,
+			require: true,
+		},
 	},
 	{
 		versionKey: false,
