@@ -6,6 +6,7 @@ import config from './config';
 
 import kwRoutes from './routes/keyWord.routes';
 import acRoutes from './routes/asinsConfirmed.routes';
+import asinsRoutes from './routes/asins.routes';
 
 const app = express();
 
@@ -18,5 +19,6 @@ app.use(express.urlencoded({ extended: false })); // para entender los campos qu
 
 app.use(kwRoutes);
 app.use(acRoutes);
+app.use(asinsRoutes);
 
 export default app;

@@ -1,15 +1,17 @@
 import React from 'react';
 
 import { UrlInterface } from './UrlsInterface';
+import { AsinsConfirmedInterface } from './AsinsConfirmedInterface';
 
-import Row from './Row';
+import RowTable from './Row';
 
 interface Props {
 	keyWords: UrlInterface[];
 	loadKeyWords: () => void;
+	asinsConfirmed: AsinsConfirmedInterface[];
 }
 
-const TableKW = ({ keyWords, loadKeyWords }: Props) => {
+const TableKW = ({ keyWords, loadKeyWords, asinsConfirmed }: Props) => {
 	return (
 		<div className='mb-4'>
 			<div className='row'>
@@ -36,7 +38,12 @@ const TableKW = ({ keyWords, loadKeyWords }: Props) => {
 			</div>
 			{keyWords.map((eachKW: UrlInterface) => {
 				return (
-					<Row eachKW={eachKW} key={eachKW._id} loadKeyWords={loadKeyWords} />
+					<RowTable
+						eachKW={eachKW}
+						key={eachKW._id}
+						loadKeyWords={loadKeyWords}
+						asinsConfirmed={asinsConfirmed}
+					/>
 				);
 			})}
 		</div>

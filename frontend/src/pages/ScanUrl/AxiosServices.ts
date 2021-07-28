@@ -1,7 +1,11 @@
 import axios from 'axios';
 import { UrlInterface } from './UrlsInterface';
+import { AsinItemInterface } from './AsinItemInterface';
+import { AsinsConfirmedInterface } from './AsinsConfirmedInterface';
 
 const API = 'http://localhost:8000/keywords';
+const API2 = 'http://localhost:8000/asinsconfirmed';
+const API3 = 'http://localhost:8000/asins';
 
 export const updateKeyWord = async (
 	obj: UrlInterface,
@@ -20,6 +24,24 @@ export const getKeyWords = async () => {
 
 export const deleteKeyWord = async (id: string) => {
 	return await axios.delete<UrlInterface>(`${API}/${id}`);
+};
+
+export const updateAsinsConfirmed = async (
+	item: AsinItemInterface,
+	responseCallback?: string
+) => {
+	return await axios.put<AsinItemInterface>(API2, item);
+};
+
+export const getAsinsConfirmed = async () => {
+	return await axios.get<AsinsConfirmedInterface[]>(API2);
+};
+
+export const createAsin = async (
+	item: AsinItemInterface,
+	responseCallback?: string
+) => {
+	return await axios.post<AsinItemInterface>(API3, item);
 };
 
 /* export const getVideos = async () => {

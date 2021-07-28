@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
+import React, { ChangeEvent, useState } from 'react';
 
 import * as axiosServices from './AxiosServices';
 
 import TrashCan from '../../components/icons/TrashCan';
 
 import { UrlInterface } from './UrlsInterface';
+import { AsinsConfirmedInterface } from './AsinsConfirmedInterface';
+
 import { toast } from 'react-toastify';
-import { Button, Modal, ProgressBar } from 'react-bootstrap';
+import { Button, Col, Form, Modal, ProgressBar, Row } from 'react-bootstrap';
 
 import GetAsins from './BtnGetAsins';
 import GetAsinInfo from './BtnGetAsinInfo';
@@ -14,9 +16,25 @@ import GetAsinInfo from './BtnGetAsinInfo';
 interface Props {
 	eachKW: UrlInterface;
 	loadKeyWords: () => void;
+	asinsConfirmed: AsinsConfirmedInterface[];
 }
 
-const Row = ({ eachKW, loadKeyWords }: Props) => {
+type InputChange = ChangeEvent<HTMLInputElement | HTMLTextAreaElement>;
+
+interface QtyInterface {
+	qty: number;
+}
+
+const RowTable = ({ eachKW, loadKeyWords, asinsConfirmed }: Props) => {
+	const initialState = {
+		qty: 10,
+	};
+	const [qtyState, setQtyState] = useState<QtyInterface>(initialState);
+
+	const handleInputChange = (e: InputChange) => {
+		setQtyState({ ...qtyState, [e.target.name]: e.target.value });
+	};
+
 	const handleDelete = async (id: string) => {
 		await axiosServices
 			.deleteKeyWord(id)
@@ -36,13 +54,14 @@ const Row = ({ eachKW, loadKeyWords }: Props) => {
 	};
 
 	const handleScan2 = async () => {
-		//setBarStatus2(0);
-		//handleModelShow();
+		setBarStatus2(0);
+		handleModelShow();
 		await GetAsinInfo(
 			eachKW.asins,
 			eachKW.keyWord,
-			[],
+			asinsConfirmed,
 			eachKW._id,
+			qtyState.qty,
 			progressBarStatus2,
 			loadKeyWords
 		);
@@ -102,14 +121,30 @@ const Row = ({ eachKW, loadKeyWords }: Props) => {
 						<div className='col r2'>{eachKW.nAsins?.unchecked}</div>
 						<div className='col-5 r2'>
 							<div>
-								<Button
-									variant='success'
-									size='sm'
-									value='Scan'
-									onClick={handleScan2}
-								>
-									Scan
-								</Button>
+								{eachKW.nAsins?.total !== 0 &&
+								eachKW.nAsins?.unchecked !== 0 ? (
+									<Row>
+										<Col xs={6}>
+											<Form.Control
+												placeholder=''
+												name='qty'
+												onChange={handleInputChange}
+												autoFocus
+												value={qtyState.qty}
+											/>
+										</Col>
+										<Col>
+											<Button
+												variant='success'
+												size='sm'
+												value='Scan'
+												onClick={handleScan2}
+											>
+												Scan
+											</Button>
+										</Col>
+									</Row>
+								) : null}
 							</div>
 						</div>
 					</div>
@@ -149,4 +184,4 @@ const Row = ({ eachKW, loadKeyWords }: Props) => {
 	);
 };
 
-export default Row;
+export default RowTable;

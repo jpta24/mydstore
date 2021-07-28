@@ -3,11 +3,13 @@ const router = Router();
 
 import * as acCtrl from '../controllers/asinsConfirmed';
 
-router.post('/asinsconfirmed', acCtrl.createAsinsConfirmed);
+router.put('/asinsconfirmed', acCtrl.updateAsinsConfirmed);
+
+router.get('/asinsconfirmed', acCtrl.getAsinsConfirmed);
 
 /* router.put('/keywords', ac.updateUrl);
 
-router.get('/keywords', ac.getUrls);
+
 
 router.delete('/keywords/:id', ac.deleteUrl); */
 

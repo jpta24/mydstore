@@ -80,12 +80,13 @@ const NavbarModern = () => {
 						</Nav.Link>
 						<Nav.Link
 							className={Active.Skills}
-							href='#skills'
 							onClick={() => {
 								handleClick('Skills');
 							}}
+							as={Link}
+							to='/viewasin'
 						>
-							Skills
+							View One Asin
 						</Nav.Link>
 
 						<Navbar.Brand as={Link} to='/' className={Active.Home}>

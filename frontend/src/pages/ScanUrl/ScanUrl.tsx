@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import * as axiosServices from './AxiosServices';
 
 import { UrlInterface } from './UrlsInterface';
+import { AsinsConfirmedInterface } from './AsinsConfirmedInterface';
 
 import ScanOneUrl from './ScanOneUrl';
 import TableKW from './TableKW';
@@ -10,9 +11,14 @@ import './style.scss';
 
 const ScanUrl = () => {
 	const [keyWords, setKeyWords] = useState<UrlInterface[]>([]);
+	const [asinsConfirmed, setAsinsConfirmed] = useState<
+		AsinsConfirmedInterface[]
+	>([]);
 
 	const loadKeyWords = async () => {
 		const res = await axiosServices.getKeyWords();
+		const resAC = await axiosServices.getAsinsConfirmed();
+		setAsinsConfirmed(resAC.data);
 
 		const formatedKW = res.data
 			.map((eachKW) => {
@@ -36,7 +42,11 @@ const ScanUrl = () => {
 			<h1 className='my-3 h1centerV'>Control de URL por KeyWords</h1>
 			<ScanOneUrl loadKeyWords={loadKeyWords} />
 			<h3 className='my-3 h1centerV'>Tabla de KeyWords</h3>
-			<TableKW keyWords={keyWords} loadKeyWords={loadKeyWords} />
+			<TableKW
+				keyWords={keyWords}
+				loadKeyWords={loadKeyWords}
+				asinsConfirmed={asinsConfirmed}
+			/>
 		</div>
 	);
 };

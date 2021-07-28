@@ -35,8 +35,6 @@ export const createUrl: RequestHandler = async (req, res) => {
 };
 
 export const updateUrl: RequestHandler = async (req, res) => {
-	console.log(req.body);
-
 	try {
 		if (req.body.update === 1) {
 			for (let i = 0; i < req.body.urls.length; i++) {
@@ -107,6 +105,40 @@ export const updateUrl: RequestHandler = async (req, res) => {
 			}
 
 			return res.status(201).json(KWUpdated);
+		} else if (req.body.update === 3) {
+			for (let j = 0; j < req.body.asins.length; j++) {
+				await KeyWord.findOneAndUpdate(
+					{ _id: req.body.id, 'asins.asin': req.body.asins[j].asin },
+					{
+						$set: { 'asins.$.checked': true },
+					},
+					{ new: true }
+				);
+				await KeyWord.findByIdAndUpdate(
+					req.body.id,
+					{
+						$inc: {
+							'nAsins.unchecked': -1,
+							'nAsins.checked': 1,
+						},
+					},
+					{ new: true }
+				);
+			}
+
+			await KeyWord.findByIdAndUpdate(
+				req.body.id,
+				{
+					$inc: {
+						'nAsins.unchecked': req.body.variants.length,
+						'nAsins.total': req.body.variants.length,
+					},
+					$push: {
+						asins: { $each: req.body.variants },
+					},
+				},
+				{ new: true }
+			);
 		}
 	} catch (error) {
 		return res.json(error);

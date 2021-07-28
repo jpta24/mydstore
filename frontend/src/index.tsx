@@ -14,6 +14,7 @@ import './index.scss';
 import Navbar from './components/Navbar/NavbarModern';
 import Dashboard from './pages/Dashboard/Dashboard';
 import ScanUrl from './pages/ScanUrl/ScanUrl';
+import ViewAsin from './pages/ViewAsin/ViewAsin';
 
 ReactDOM.render(
 	<React.StrictMode>
@@ -23,6 +24,7 @@ ReactDOM.render(
 				<Switch>
 					<Route exact path='/' component={Dashboard} />
 					<Route path='/scanurl' component={ScanUrl} />
+					<Route path='/viewasin' component={ViewAsin} />
 				</Switch>
 				<ToastContainer />
 			</div>

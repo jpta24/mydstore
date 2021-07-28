@@ -1,14 +1,14 @@
 import { Router } from 'express';
 const router = Router();
 
-import * as kwCtrl from '../controllers/keyWord.controller';
+import * as asinCtrl from '../controllers/asins.controller';
 
-router.post('/keywords', kwCtrl.createUrl);
+router.post('/asins', asinCtrl.createAsin);
 
-router.put('/keywords', kwCtrl.updateUrl);
+/* router.put('/keywords', kwCtrl.updateUrl);
 
 router.get('/keywords', kwCtrl.getUrls);
 
-router.delete('/keywords/:id', kwCtrl.deleteUrl);
+router.delete('/keywords/:id', kwCtrl.deleteUrl); */
 
 export default router;
