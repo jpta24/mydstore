@@ -88,7 +88,7 @@ async function getAsinInfo(
 					await $.get(webUrlAsin).then(function (html) {
 						//-----------------------PRECIO --------------------------
 						let precioTxt = '';
-						if ($(html).find('#priceblock_saleprice').length !== 0) {
+						if ($(html).find('#priceblock_ourprice').length !== 0) {
 							precioTxt = $(html).find('#priceblock_ourprice').text();
 						} else {
 							precioTxt = $(html).find('#priceblock_saleprice').text();

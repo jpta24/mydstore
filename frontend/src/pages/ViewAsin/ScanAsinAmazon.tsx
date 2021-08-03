@@ -1,13 +1,5 @@
 import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react';
-import {
-	Button,
-	Col,
-	Dropdown,
-	DropdownButton,
-	Form,
-	InputGroup,
-	Row,
-} from 'react-bootstrap';
+import { Button, Dropdown, Form, InputGroup, Row } from 'react-bootstrap';
 
 //import GetUrls from './BtnGetUrl';
 
@@ -19,7 +11,11 @@ interface AsinInterface {
 	asin: string;
 }
 
-const ScanAsinAmazon = () => {
+interface Props {
+	BtnGetOneAsinInfo: (asin: string, keyWord?: string) => void;
+}
+
+const ScanAsinAmazon = ({ BtnGetOneAsinInfo }: Props) => {
 	const initialState = {
 		asin: '',
 	};
@@ -55,7 +51,7 @@ const ScanAsinAmazon = () => {
 		e.preventDefault();
 		handleOnClickLoadingButtom();
 		setAsinState(initialState);
-		//await GetUrls(urlState.url, loadKeyWords, progressBarStatus);
+		await BtnGetOneAsinInfo(asinState.asin);
 	};
 
 	//================================================================//
@@ -77,7 +73,7 @@ const ScanAsinAmazon = () => {
 
 					<Form.Control
 						placeholder='Pegar ASIN a scanear'
-						name='url'
+						name='asin'
 						onChange={handleInputChange}
 						autoFocus
 						value={asinState.asin}
