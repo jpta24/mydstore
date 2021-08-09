@@ -46,6 +46,7 @@ async function getOneAsinInfo(asin, keyWord) {
 	// eslint-disable-next-line no-loop-func
 	await $.get(webUrlAsin).then(async function (html) {
 		/* if ($('#info') !== undefined) {
+			let divPrice = $(html).find('#price');
 			$('#info').html(html);
 		} */
 
@@ -942,19 +943,31 @@ async function getOneAsinInfo(asin, keyWord) {
 		calculosIniciales();
 		//-----------------------PRECIO --------------------------
 		let precioTxt = '';
+		console.log();
 		if ($(html).find('#priceblock_ourprice').length !== 0) {
+			console.log(1);
 			precioTxt = $(html).find('#priceblock_ourprice').text();
 		} else if ($(html).find('#priceblock_saleprice').length !== 0) {
+			console.log(2);
 			precioTxt = $(html).find('#priceblock_saleprice').text();
+		} else if ($(html).find('#price_inside_buybox').length !== 0) {
+			console.log(3);
+			precioTxt = $(html).find('#price_inside_buybox').text();
 		} else if (item.variantes.colors.length !== 0) {
+			console.log(4);
 			precioTxt = item.variantes.colors[0].price;
 		} else if (item.variantes.size.length !== 0) {
+			console.log(5);
 			precioTxt = item.variantes.size[0].price;
 		} else if (item.variantes.style.length !== 0) {
+			console.log(6);
 			precioTxt = item.variantes.style[0].price;
 		} else if (item.variantes.pattern.length !== 0) {
+			console.log(7);
 			precioTxt = item.variantes.pattern[0].price;
 		}
+
+		console.log(precioTxt);
 
 		if (precioTxt !== '') {
 			let precioBruto = precioTxt.substring(precioTxt.indexOf('$') + 1);
