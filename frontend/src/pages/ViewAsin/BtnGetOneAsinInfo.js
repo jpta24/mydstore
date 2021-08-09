@@ -82,7 +82,7 @@ async function getOneAsinInfo(asin, keyWord) {
 		}
 
 		//------------------------SELECCION-------------------------
-		var varSelection = $(html)
+		/* var varSelection = $(html)
 			.find('#twister')
 			.find('.selection')
 			.text()
@@ -93,7 +93,7 @@ async function getOneAsinInfo(asin, keyWord) {
 			.prev()
 			.text()
 			.trim();
-		item.selection = varSelection2 + ' ' + varSelection;
+		item.selection = varSelection2 + ' ' + varSelection; */
 		//console.log('selection: ' + item.selection);
 
 		//------------------------Variantes-------------------------
@@ -324,6 +324,75 @@ async function getOneAsinInfo(asin, keyWord) {
 			}
 		}
 		//console.log('variantes: ' + item.variantes);
+
+		//------------------------SELECCION 2-------------------------
+		let selection2 = [];
+		if (item.variantes.colors.length !== 0) {
+			var varCSelection = $(html)
+				.find('#variation_color_name')
+				.find('.selection')
+				.text()
+				.trim();
+			var varCSelection2 = $(html)
+				.find('#variation_color_name')
+				.find('.selection')
+				.prev()
+				.text()
+				.trim();
+			let colorSeleccion = varCSelection2 + ' ' + varCSelection;
+
+			selection2.push(colorSeleccion);
+		}
+
+		if (item.variantes.size.length !== 0) {
+			var varSSelection = $(html)
+				.find('#variation_size_name')
+				.find('.selection')
+				.text()
+				.trim();
+			var varSSelection2 = $(html)
+				.find('#variation_size_name')
+				.find('.selection')
+				.prev()
+				.text()
+				.trim();
+			let sizeSeleccion = varSSelection2 + ' ' + varSSelection;
+
+			selection2.push(sizeSeleccion);
+		}
+		if (item.variantes.style.length !== 0) {
+			var varStSelection = $(html)
+				.find('#variation_style_name')
+				.find('.selection')
+				.text()
+				.trim();
+			var varStSelection2 = $(html)
+				.find('#variation_style_name')
+				.find('.selection')
+				.prev()
+				.text()
+				.trim();
+			let styleSeleccion = varStSelection2 + ' ' + varStSelection;
+
+			selection2.push(styleSeleccion);
+		}
+		if (item.variantes.pattern.length !== 0) {
+			var varPSelection = $(html)
+				.find('#variation_pattern_name')
+				.find('.selection')
+				.text()
+				.trim();
+			var varPSelection2 = $(html)
+				.find('#variation_pattern_name')
+				.find('.selection')
+				.prev()
+				.text()
+				.trim();
+			let patternSeleccion = varPSelection2 + ' ' + varPSelection;
+
+			selection2.push(patternSeleccion);
+		}
+		item.selection = selection2;
 
 		//------------------------DESCRIPCION-------------------------
 
@@ -616,11 +685,10 @@ async function getOneAsinInfo(asin, keyWord) {
 				if ($(html).find('.' + classType)[postm0].nextElementSibling !== null) {
 					var uniMedida = $(html).find('.' + classType)[postm0]
 						.nextElementSibling.innerHTML;
-					var i;
 					if (uniMedida !== undefined) {
-						for (i = 0; i < uniMedida1.length; i++) {
-							if (uniMedida.search(uniMedida1[i]) !== -1) {
-								uniMedida0 = uniMedida1[i];
+						for (let q = 0; q < uniMedida1.length; q++) {
+							if (uniMedida.search(uniMedida1[q]) !== -1) {
+								uniMedida0 = uniMedida1[q];
 								medNum = uniMedida.substring(
 									1,
 									uniMedida.search(uniMedida0) - 1
@@ -629,13 +697,11 @@ async function getOneAsinInfo(asin, keyWord) {
 								var indices = [];
 								for (var j = 0; j < medNum.length; j++) {
 									if (medNum[j] === 'x') indices.push(j);
-									item.medidas.largo = medNum.substring(0, indices[0] - 1);
-									item.medidas.ancho = medNum.substring(
-										indices[0] + 2,
-										indices[1] - 1
-									);
-									item.medidas.prof = medNum.substring(indices[1] + 2);
 								}
+								item.medidas.largo = medNum.substring(0, indices[0] - 1);
+								item.medidas.ancho =
+									medNum.substring(indices[0] + 2, indices[1] - 1) * 1;
+								item.medidas.prof = medNum.substring(indices[1] + 2) * 1;
 								break;
 							} else {
 								uniMedida0 = 'S/Inf';
@@ -649,27 +715,24 @@ async function getOneAsinInfo(asin, keyWord) {
 		function getMedNumByLi() {
 			if ($(html).find('li')[postm0] !== undefined) {
 				var uniMedida = $(html).find('li')[postm0].innerText;
-				for (i = 0; i < uniMedida1.length; i++) {
-					if (uniMedida.search(uniMedida1[i]) !== -1) {
-						uniMedida0 = uniMedida1[i];
-						medNum = uniMedida.substring(
-							uniMedida.indexOf(':') + 2,
-							uniMedida.search(uniMedida0) - 1
-						);
-						item.medidas.dimensiones = medNum;
-						var indices = [];
-						for (var j = 0; j < medNum.length; j++) {
-							if (medNum[j] === 'x') indices.push(j);
+				if (uniMedida !== undefined) {
+					for (let q = 0; q < uniMedida1.length; q++) {
+						if (uniMedida.search(uniMedida1[q]) !== -1) {
+							uniMedida0 = uniMedida1[q];
+							medNum = uniMedida.substring(1, uniMedida.search(uniMedida0) - 1);
+							item.medidas.dimensiones = medNum;
+							var indices = [];
+							for (var j = 0; j < medNum.length; j++) {
+								if (medNum[j] === 'x') indices.push(j);
+							}
 							item.medidas.largo = medNum.substring(0, indices[0] - 1);
-							item.medidas.ancho = medNum.substring(
-								indices[0] + 2,
-								indices[1] - 1
-							);
-							item.medidas.prof = medNum.substring(indices[1] + 2);
+							item.medidas.ancho =
+								medNum.substring(indices[0] + 2, indices[1] - 1) * 1;
+							item.medidas.prof = medNum.substring(indices[1] + 2) * 1;
+							break;
+						} else {
+							uniMedida0 = 'S/Inf';
 						}
-						break;
-					} else {
-						uniMedida0 = 'S/Inf';
 					}
 				}
 			}
@@ -818,7 +881,19 @@ async function getOneAsinInfo(asin, keyWord) {
 				}
 			}
 		}
+
 		function calculosIniciales() {
+			if (item.medidas.largo.charCodeAt(0) === 8206) {
+				item.medidas.largo = item.medidas.largo.substring(1) * 1;
+			} else {
+				item.medidas.largo = item.medidas.largo * 1;
+			}
+			if (item.medidas.peso.charCodeAt(0) === 8206) {
+				item.medidas.peso = item.medidas.peso.substring(1) * 1;
+			} else {
+				item.medidas.peso = item.medidas.peso * 1;
+			}
+
 			// Costos de Envio
 
 			// Conversion de medidas a inches
@@ -854,13 +929,13 @@ async function getOneAsinInfo(asin, keyWord) {
 
 			// volumen
 
-			item.medidas.volumen =
+			item.medidas.volumen = +(
 				item.medidas.largo *
 				1 *
 				(item.medidas.ancho * 1) *
-				(item.medidas.prof * 1);
+				(item.medidas.prof * 1)
+			).toFixed(2);
 
-			console.log(item.medidas.largo[0])
 			//console.log('volumen: ' + item.medidas.volumen);
 			//console.log('medidas: ' + item.medidas);
 		}
