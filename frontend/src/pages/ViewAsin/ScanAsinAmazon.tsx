@@ -1,7 +1,9 @@
 import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { Button, Dropdown, Form, InputGroup, Row } from 'react-bootstrap';
 
-//import GetUrls from './BtnGetUrl';
+import BtnGetOneAsin from './BtnGetoneAsin';
+
+import { AsinItemInterface } from './AsinItemInterface';
 
 type InputChange = ChangeEvent<HTMLInputElement | HTMLTextAreaElement>;
 
@@ -12,10 +14,10 @@ interface AsinInterface {
 }
 
 interface Props {
-	BtnGetOneAsinInfo: (asin: string, keyWord?: string) => void;
+	dataInputs: (item: AsinItemInterface) => void;
 }
 
-const ScanAsinAmazon = ({ BtnGetOneAsinInfo }: Props) => {
+const ScanAsinAmazon = ({ dataInputs }: Props) => {
 	const initialState = {
 		asin: '',
 	};
@@ -51,8 +53,11 @@ const ScanAsinAmazon = ({ BtnGetOneAsinInfo }: Props) => {
 		e.preventDefault();
 		handleOnClickLoadingButtom();
 		setAsinState(initialState);
-		await BtnGetOneAsinInfo(asinState.asin);
+		let item = BtnGetOneAsin(asinState.asin, 'No KeyWord');
+		dataInputs(await item);
 	};
+
+	//================================================================//
 
 	//================================================================//
 

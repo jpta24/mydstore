@@ -8,27 +8,32 @@ async function getOneAsinInfo(asin, keyWord) {
 		linkAsin: '',
 		nombre: '',
 		asin: '',
-		precio: '',
+		precio: 0,
 		prime: false,
 		disponibilidad: false,
-		condicionNew: false,
+		condicionNew: true,
 		cantidad: 1,
-		selection: '',
-		variantes: { colors: [], size: [], style: [], pattern: [] },
+		selection: [],
+		variantes: {
+			colors: [],
+			size: [],
+			style: [],
+			pattern: [],
+		},
 		descripcion: '',
-		categorias: '',
+		categorias: [],
 		imagenes: [],
 		medidas: {
 			dimensiones: '',
-			largo: '',
-			ancho: '',
-			prof: '',
-			peso: '',
-			volumen: '',
+			largo: 0,
+			ancho: 0,
+			prof: 0,
+			peso: 0,
+			volumen: 0,
 		},
 		rankings: {
 			ranks: [],
-			maxRank: '',
+			maxRank: 0,
 		},
 		cupon: false,
 		meta: '',
@@ -945,29 +950,27 @@ async function getOneAsinInfo(asin, keyWord) {
 		let precioTxt = '';
 		console.log();
 		if ($(html).find('#priceblock_ourprice').length !== 0) {
-			console.log(1);
+			//console.log(1);
 			precioTxt = $(html).find('#priceblock_ourprice').text();
 		} else if ($(html).find('#priceblock_saleprice').length !== 0) {
-			console.log(2);
+			//console.log(2);
 			precioTxt = $(html).find('#priceblock_saleprice').text();
 		} else if ($(html).find('#price_inside_buybox').length !== 0) {
-			console.log(3);
+			//console.log(3);
 			precioTxt = $(html).find('#price_inside_buybox').text();
 		} else if (item.variantes.colors.length !== 0) {
-			console.log(4);
+			//console.log(4);
 			precioTxt = item.variantes.colors[0].price;
 		} else if (item.variantes.size.length !== 0) {
-			console.log(5);
+			//console.log(5);
 			precioTxt = item.variantes.size[0].price;
 		} else if (item.variantes.style.length !== 0) {
-			console.log(6);
+			//console.log(6);
 			precioTxt = item.variantes.style[0].price;
 		} else if (item.variantes.pattern.length !== 0) {
-			console.log(7);
+			//console.log(7);
 			precioTxt = item.variantes.pattern[0].price;
 		}
-
-		console.log(precioTxt);
 
 		if (precioTxt !== '') {
 			let precioBruto = precioTxt.substring(precioTxt.indexOf('$') + 1);

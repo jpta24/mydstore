@@ -2,17 +2,18 @@ import React from 'react';
 import { FormControl, InputGroup } from 'react-bootstrap';
 
 interface Props {
-	categorias: string[] | undefined;
+	selection: string[] | undefined;
 }
 
-const Categorias = ({ categorias }: Props) => {
+const Selection = ({ selection }: Props) => {
 	return (
 		<InputGroup className='mb-3'>
-			<InputGroup.Text>Categorias</InputGroup.Text>
-			{categorias?.length === 0 ? (
+			<InputGroup.Text>Selección</InputGroup.Text>
+
+			{selection?.length === 0 ? (
 				<FormControl value={''} />
 			) : (
-				categorias?.map((eachSel: string) => {
+				selection?.map((eachSel: string) => {
 					return <FormControl value={eachSel} />;
 				})
 			)}
@@ -20,4 +21,4 @@ const Categorias = ({ categorias }: Props) => {
 	);
 };
 
-export default Categorias;
+export default Selection;

@@ -30,8 +30,7 @@ const asinsSchema = new Schema(
 			type: Number,
 		},
 		selection: {
-			type: String,
-			trim: true,
+			type: Array,
 		},
 		variantes: {
 			colors: {
@@ -69,19 +68,19 @@ const asinsSchema = new Schema(
 				trim: true,
 			},
 			largo: {
-				type: String,
+				type: Number,
 				trim: true,
 			},
 			ancho: {
-				type: String,
+				type: Number,
 				trim: true,
 			},
 			prof: {
-				type: String,
+				type: Number,
 				trim: true,
 			},
 			peso: {
-				type: String,
+				type: Number,
 				trim: true,
 			},
 			volumen: {
